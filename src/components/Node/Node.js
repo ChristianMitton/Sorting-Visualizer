@@ -15,6 +15,7 @@ class Node extends Component {
             value, 
             row, 
             col, 
+            maxRows
         } = this.props;        
         //? assign class depending on value passed to prop using terinary operator
         //! <true/false statement> ? <if true, this runs> : <if false, this runs> ;
@@ -27,11 +28,17 @@ class Node extends Component {
         // : isWall
         // ? 'node-wall'
         // : "";
-
+        console.log(`row:${row}, col:${col}, maxRows:${maxRows}`)
+        let extraClassName = ''
+        if (row == maxRows-1){
+            extraClassName = 'footer'                        
+        }
+        {console.log(extraClassName)}
         return (
-            //assigning multiple classNames to a Node
-            <div className={`node`}>
+            //assigning multiple classNames to a Node            
+            <div className={`node ${extraClassName}`}>
                     {/* {value} */}
+                    1
             </div>
         )
     }
