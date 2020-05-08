@@ -50,8 +50,7 @@ class Node extends Component {
         return (
             //assigning multiple classNames to a Node            
             <div className={`node ${extraClassName}`}>
-                    {/* {value} */}
-                    *
+                    {value}                    
             </div>
         )
     }
