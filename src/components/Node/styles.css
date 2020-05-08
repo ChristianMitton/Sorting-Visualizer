@@ -7,6 +7,10 @@
   background-color: lightblue;
 }
 
+.active {
+  background-color: black;
+}
+
 .bar {
   background-color: transparent;
   font-size: 0;

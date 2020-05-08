@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Node from './Node/Node';
 import '../styles/styles.css';
 
+import { clone, copy2dArrayOfObjects, modify } from './initial_setup/copyObjects';
+
 let GraphNode = require('../dataStructures/GraphNode').default;
 let createDefaultGrid = require('./initial_setup/createDefaultGrid').default;
 
@@ -24,7 +26,45 @@ class SortingVisualizer extends Component {
       this.setState({
           grid: grid
       });
-  }
+    }
+
+    loadGrid() {
+      // const {updatedGrid} = this.state;  
+      let updatedGrid = copy2dArrayOfObjects(this.state.grid)
+      
+      updatedGrid = this.populateGrid(updatedGrid, testArr)      
+      
+      this.setState ({
+        grid: updatedGrid
+      })
+    }
+
+    populateGrid(grid, arr) {
+      // updatedGrid[4][4].active = true;
+      let endOfArr = numRows-2      
+
+      let col = 0
+      while(col < numCols){
+        let currentNum = arr[col]
+
+        grid = this.fillCol(grid, col, currentNum)
+        col += 1
+      }      
+      return grid
+
+    }
+
+    fillCol(grid, col, fillAmount){            
+      let count = 0
+      let row = numRows-2      
+
+      while(count <= fillAmount) {
+        grid[row][col].active = true
+        row -= 1
+        count += 1
+      }
+      return grid
+    }
 
     render(){     
       const {grid} = this.state;  
@@ -37,7 +77,9 @@ class SortingVisualizer extends Component {
             <p>                
                 Test array: {testArr}
             </p>
-
+            <button onClick={() => this.loadGrid()}>
+                Load Array
+            </button>
             <div className="grid">
             {/* Map can have three parameters: value, index, array */}
               {grid.map( (row, rowIdx) => {
@@ -45,7 +87,7 @@ class SortingVisualizer extends Component {
                   <div key={rowIdx}>
                     {row.map((node, nodeIdx) => {                                
                       // obtaing the current node and create a div for it
-                      const {value, row, col} = node;
+                      const {value, row, col, active} = node;
                       //TODO: if at the last row, figure out how to add numbers
                       if (row == numRows - 1) {
 
@@ -57,6 +99,7 @@ class SortingVisualizer extends Component {
                             row={row}
                             col={col}
                             maxRows={numRows}
+                            isActive={active}
                         />
                       )
                     }) }                            
