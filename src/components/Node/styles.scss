@@ -3,13 +3,14 @@ $startColor: rgba(63, 195, 128, 1);
 $finishColor: rgba(255, 0, 0, 0.6);
 
 .node {
-    width: 2vw;
-    height: 3vh;
+    width: 4vw;
+    height: 6vh;    
+  
     // outline: 1px solid rgb(175, 216, 248);
     margin-left: 5px;
     margin-right: 5px;
     display: inline-block;    
-    background-color: lightblue;            
+    // background-color: lightblue;            
 
 }
 
@@ -28,10 +29,10 @@ $finishColor: rgba(255, 0, 0, 0.6);
     margin-top: -1px;
     margin-left: 0;
     margin-right: 0;
-    margin-bottom: -15px;
+    margin-bottom: -25px;
     
-    // width: 2.5vw;
-    width: 2.8vw;
+    // width: 1.4vw;
+    // width: 2.8vw;
     // width: 3.8vh;
 }
 

@@ -85,14 +85,14 @@ class SortingVisualizer extends Component {
       let id = 0;
       
       return (
-          <div>
+          <div className="whole_page">
             <p>                
                 Test array: {sampleArray}
             </p>
  
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label>Enter Array</label>                                        
+                    <label>Enter comma seperated numbers (e.g. 1,3,2) </label>                                        
                     <input type='text' value={this.state.user_array} onChange={this.handleArrayChange}/>
                     <button type="submit">Enter</button>       
                 </div>                         

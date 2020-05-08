@@ -12,17 +12,19 @@ $girdOutline: rgb(71, 85, 95);
 // }
 
 body {
-    font-family: "Avenir Next";
+	font-family: "Avenir Next";
+	font-size: 30px;
+}
+
+.whole_page {
+	// width: 900px;
+	// margin-left: auto;
+	// margin-right: auto;		
 }
 
 .grid {
-    margin-bottom: 20px;    
+    margin-bottom: 50px;    
 }
-
-// .footer {
-//     background: red;;
-//     margin-top: 20px;
-// }
 
 .button {    
     margin: 12px;

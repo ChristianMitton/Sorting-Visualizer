@@ -4,10 +4,11 @@
 
 body {
   font-family: "Avenir Next";
+  font-size: 30px;
 }
 
 .grid {
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .button {
