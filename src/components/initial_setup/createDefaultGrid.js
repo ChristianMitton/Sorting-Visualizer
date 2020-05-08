@@ -2,7 +2,7 @@ let GraphNode = require('../../dataStructures/GraphNode').default;
 
 function createDefaultGrid(numRows, numCols){
     const grid = [];
-    numCols += 1    
+    numCols += 2    
     for (let row = 0; row < numRows; row++){
         const currentRow = [];
         for(let col = 0; col < numCols; col++) {                

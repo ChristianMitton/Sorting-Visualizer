@@ -1,12 +1,25 @@
 .node {
   width: 2vw;
   height: 3vh;
+  margin-left: 5px;
+  margin-right: 5px;
   display: inline-block;
+  background-color: lightblue;
+}
+
+.bar {
+  background-color: transparent;
+  font-size: 0;
+  border-top: 1px solid;
+  margin-top: -1px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: -15px;
+  width: 2.8vw;
 }
 
 .footer {
-  padding-top: 10px;
-  border-top: 1px solid;
-  margin-top: -1px;
+  background-color: transparent;
+  background-color: lightgreen;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -29,16 +29,24 @@ class Node extends Component {
         // ? 'node-wall'
         // : "";
         console.log(`row:${row}, col:${col}, maxRows:${maxRows}`)
-        let extraClassName = ''
-        if (row == maxRows-1){
+        let extraClassName = ''        
+
+        let secondToLastRow = maxRows-2;
+        let lastRow = maxRows-1;        
+
+        if (row == secondToLastRow){
+            extraClassName = 'bar'                        
+        }        
+        
+        if (row == lastRow){
             extraClassName = 'footer'                        
         }
-        {console.log(extraClassName)}
+
         return (
             //assigning multiple classNames to a Node            
             <div className={`node ${extraClassName}`}>
                     {/* {value} */}
-                    1
+                    *
             </div>
         )
     }
