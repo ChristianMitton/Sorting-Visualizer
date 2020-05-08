@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Node from './Node/Node';
+import Form from './Form';
 import '../styles/styles.css';
 
 import { clone, copy2dArrayOfObjects, modify } from './initial_setup/copyObjects';
@@ -11,38 +12,71 @@ let load_array = require('./initial_setup/loadArray').default;
 
 let numRows = 20
 let numCols = 10
-let testArr = [ 9 , 2 , 7 , 5 , 8 , 4 , 3 , 1 , 6 ]
+let sampleArray = [ 9 , 2 , 7 , 5 , 8 , 4 , 3 , 1 , 6 ]
 
 class SortingVisualizer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            grid: []
+            grid: [],
+            user_array: []
         };
     }
 
     componentDidMount() {
       // create grid when component is first rendered
       //? '+ 2' accounts for bar and footer
-      numRows = Math.max.apply(null, testArr) + 2
-      numCols = testArr.length
+      numRows = Math.max.apply(null, sampleArray) + 2
+      numCols = sampleArray.length
 
-      const grid = createDefaultGrid(numRows, numCols);
+      let grid = createDefaultGrid(numRows, numCols);
+
+      grid = load_array(grid, sampleArray, numRows, numCols)
       
       this.setState({
           grid: grid
       });
     }
 
-    loadArray() {      
-      let updatedGrid = copy2dArrayOfObjects(this.state.grid)
+    loadArray(array) {           
+
+      numRows = Math.max.apply(null, array) + 2
+      numCols = array.length
+
+      let updatedGrid = createDefaultGrid(numRows, numCols)
+
+      let grid = createDefaultGrid(numRows, numCols);
+
+      grid = load_array(grid, array, numRows, numCols)
       
-      updatedGrid = load_array(updatedGrid, testArr, numRows, numCols)      
+      this.setState({
+          grid: grid
+      });
+      
+      // ! change sample to user input array here
+      updatedGrid = load_array(updatedGrid, array, numRows, numCols)      
       
       this.setState ({
         grid: updatedGrid
       })
     }  
+
+    handleArrayChange = (event) => {
+      let arr = event.target.value
+      this.setState({
+          user_array: arr
+      })
+    }
+
+    handleSubmit = event => {
+        // alert(`${this.state.user_array}`)
+        event.preventDefault()
+        //let userArray = Array.from(this.state.user_array)
+
+        let userArray = this.state.user_array.replace(/\s/g, '').split(',')
+
+        this.loadArray(userArray)
+    }
 
     render(){     
       const {grid} = this.state;  
@@ -53,12 +87,16 @@ class SortingVisualizer extends Component {
       return (
           <div>
             <p>                
-                Test array: {testArr}
+                Test array: {sampleArray}
             </p>
-
-            <button onClick={() => this.loadArray()}>
-                Load Array
-            </button>
+ 
+            <form onSubmit={this.handleSubmit}>
+                <div>
+                    <label>Enter Array</label>                                        
+                    <input type='text' value={this.state.user_array} onChange={this.handleArrayChange}/>
+                    <button type="submit">Enter</button>       
+                </div>                         
+            </form>  
 
             <div className="grid">            
               {grid.map( (row, rowIdx) => {
