@@ -1,19 +1,23 @@
 function insertionSort(arr){
     let visitedNumbers = []
-
-    // console.log(`initial array: ${arr}`)
+    
     for (let i = 1; i < arr.length; i += 1) {        
-        visitedNumbers.push(arr.slice())        
-        // console.log(`pushed: ${arr}`)
+        //TODO: push tuple, with [arr, footerNumToHighlight]              
+
         let key = arr[i]
         let j = i - 1
+        // visitedNumbers.push(arr.slice())  
+        // console.log('highlight: ' + key)
+        visitedNumbers.push([arr.slice(), key])
         
         while(j >= 0 && arr[j] > key){                                                
             let temp = arr[j]
             arr[j] = arr[j + 1]
             arr[j + 1] = temp                       
             j -= 1;            
-            visitedNumbers.push(arr.slice())
+            // visitedNumbers.push(arr.slice())
+            // console.log('highlight: ' + key)
+            visitedNumbers.push([arr.slice(), key])            
         }        
     }
 

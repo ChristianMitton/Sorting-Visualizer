@@ -16,7 +16,8 @@ class Node extends Component {
             row, 
             col, 
             maxRows,
-            isActive
+            isActive,
+            isHighlighted
         } = this.props;        
         //? assign class depending on value passed to prop using terinary operator
         //! <true/false statement> ? <if true, this runs> : <if false, this runs> ;
@@ -35,16 +36,20 @@ class Node extends Component {
         let secondToLastRow = maxRows-2;
         let lastRow = maxRows-1;        
 
-        if (row == secondToLastRow){
+        if (row === secondToLastRow){
             extraClassName = 'bar'                        
         }        
         
-        if (row == lastRow){
+        if (row === lastRow){
             extraClassName = 'footer'                        
         }
 
         if (isActive){
             extraClassName += ' active'
+        }
+
+        if (isHighlighted){
+            extraClassName += ' highlighted'
         }
 
         return (

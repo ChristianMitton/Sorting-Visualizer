@@ -3,7 +3,8 @@ class GraphNode {
         this.value = value;
         this.row = row;
         this.col = col; 
-        this.active = false;          
+        this.active = false;
+        this.isHighlighted = false;   
     }
 }
 
