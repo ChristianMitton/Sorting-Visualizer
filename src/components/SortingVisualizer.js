@@ -89,31 +89,89 @@ class SortingVisualizer extends Component {
     }
 
     animateInsertion(sortedSeq) {
-        //sortedSeq is the following format: [array, [footer_num_to_be_highlighted] 
-        for(let i in sortedSeq){
-          let currArray = sortedSeq[i][0]  
-          let highlightCol =  sortedSeq[i][1]                      
+      //sortedSeq is the following format: [array, footer_num_to_be_highlighted] 
+      for(let i in sortedSeq){
+        let currArray = sortedSeq[i][0]
+        let highlightCol =  sortedSeq[i][1]
+        
+        setTimeout(() => {            
+
+          //handle current 'picture' of grid
+          this.loadArray(currArray) 
+
+          //handle current highlighted column
+          NUM_ROWS = Math.max.apply(null, currArray) + 2
+          NUM_COLS = currArray.length
+          let gridWithHighlight = this.state.grid            
+          gridWithHighlight = this.highlightCol(gridWithHighlight, highlightCol, NUM_ROWS, NUM_COLS)
+
+          this.setState ({
+            grid: gridWithHighlight
+          })
+        
           
-          setTimeout(() => {            
+        }, 600 * i)
+        // }, 5000 * i)
+      }
+  }
 
-            //handle current 'picture' of grid
-            this.loadArray(currArray) 
+    visualizeSelectionSort(){
+      let arrayToUse = []
+      //If the user array hasn't been filled, default to sample array
+      if (this.state.user_array.length != 0){
+        arrayToUse = this.state.user_array.split(',').map(Number)
+      } else {
+        arrayToUse = SAMPLE_ARRAY
+      }
 
-            //handle current highlighted column
+      let sortedSeq = selection_sort(arrayToUse)
+
+      this.animate_selection_sort(sortedSeq)      
+    }
+
+    animate_selection_sort(sortedSeq) {
+      //sortedSeq is the following format: [array, currentNumber, smallestNumberPtr] 
+      for(let i in sortedSeq){
+        let currArray = sortedSeq[i][0]
+        let currColHighlight =  sortedSeq[i][1]
+        let smallestNumPtrHighlight =  sortedSeq[i][2]
+
+        setTimeout(() => {            
+          console.log('>     currColHighlight: ' + currColHighlight)
+          console.log('>     smallestNumPtrHighlight: ' + smallestNumPtrHighlight)
+
+          //handle current 'picture' of grid
+          this.loadArray(currArray) 
+
+          //handle currColHighlight
+          if(currColHighlight !== -1){
             NUM_ROWS = Math.max.apply(null, currArray) + 2
             NUM_COLS = currArray.length
+
             let gridWithHighlight = this.state.grid            
-            gridWithHighlight = this.highlightCol(gridWithHighlight, highlightCol, NUM_ROWS, NUM_COLS)
+            gridWithHighlight = this.highlightCol(gridWithHighlight, currColHighlight, NUM_ROWS, NUM_COLS)
 
             this.setState ({
               grid: gridWithHighlight
-            })
+            })     
+          }
+          //handle smallestNumPtrHighlight
+          if(smallestNumPtrHighlight !== -1){
+            NUM_ROWS = Math.max.apply(null, currArray) + 2
+            NUM_COLS = currArray.length
+
+            let gridWithHighlight = this.state.grid            
+            gridWithHighlight = this.highlightCol(gridWithHighlight, smallestNumPtrHighlight, NUM_ROWS, NUM_COLS)
+
+            this.setState ({
+              grid: gridWithHighlight
+            })     
+          }
           
-            
-          }, 600 * i)
-          // }, 5000 * i)
-        }
-    }
+        }, 600 * i)
+      }
+
+    }    
 
     highlightCol(grid, footerNumToHighlight, numRows, numCols){  
 
@@ -167,6 +225,10 @@ class SortingVisualizer extends Component {
 
             <button onClick={() => this.visualizeInsertion()}>
               Insertion Sort
+            </button>
+
+            <button onClick={() => this.visualizeSelectionSort()}>
+              Selection Sort
             </button>
 
             <div className="grid">            
