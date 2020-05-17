@@ -16,7 +16,7 @@ let selection_sort = require('../algorithms/selection_sort').default;
 
 let NUM_ROWS = 20
 let NUM_COLS = 10
-let SAMPLE_ARRAY = [ 9 , 2 , 7 , 5 , 8 , 4 , 3 , 1 , 6 ]
+let SAMPLE_ARRAY = [ 9 , 2 , 7 , 5 , 10, 8 , 4 , 3 , 1 , 6, ]
 
 class SortingVisualizer extends Component {
     constructor(props) {
@@ -29,13 +29,13 @@ class SortingVisualizer extends Component {
 
     componentDidMount() {
       // create grid when component is first rendered
-      //? '+ 2' accounts for bar and footer
+      //? '+ 2' accounts for bar and footer  
       NUM_ROWS = Math.max.apply(null, SAMPLE_ARRAY) + 2
       NUM_COLS = SAMPLE_ARRAY.length
 
       let grid = createDefaultGrid(NUM_ROWS, NUM_COLS);
 
-      grid = load_array(grid, SAMPLE_ARRAY, NUM_ROWS, NUM_COLS, false)
+      grid = load_array(grid, SAMPLE_ARRAY, NUM_ROWS, NUM_COLS)
       
       this.setState({
           grid: grid
@@ -56,17 +56,17 @@ class SortingVisualizer extends Component {
 
         let userArray = this.state.user_array.replace(/\s/g, '').split(',')
 
-        this.loadArray(userArray, false)
+        this.loadArray(userArray)
     }
 
-    loadArray(array, hashighlight) {           
+    loadArray(array) {           
 
       NUM_ROWS = Math.max.apply(null, array) + 2
       NUM_COLS = array.length
 
       let updatedGrid = createDefaultGrid(NUM_ROWS, NUM_COLS)
       
-      updatedGrid = load_array(updatedGrid, array, NUM_ROWS, NUM_COLS, hashighlight)      
+      updatedGrid = load_array(updatedGrid, array, NUM_ROWS, NUM_COLS)      
       
       this.setState ({
         grid: updatedGrid
@@ -75,35 +75,36 @@ class SortingVisualizer extends Component {
 
     visualizeInsertion(){
       let arrayToUse = [1]
+      //If the user array hasn't been filled, default to sample array
       if (this.state.user_array.length != 0){
         arrayToUse = this.state.user_array.split(',').map(Number)
       } else {
         arrayToUse = SAMPLE_ARRAY
       }
-      
-      //TODO: modify insertion_sort to return [arr, footerNumToHighlight]
+            
       let sortedSeq = insertion_sort(arrayToUse)
-      // console.log(sortedSeq)
+      
       this.animateInsertion(sortedSeq)
 
     }
 
     animateInsertion(sortedSeq) {
-        
+        //sortedSeq is the following format: [array, [footer_num_to_be_highlighted] 
         for(let i in sortedSeq){
           let currArray = sortedSeq[i][0]  
-          let highlightCol =  sortedSeq[i][1]  
-          
-          // console.log('HIGLIGTHED COL: ' + highlightCol)
+          let highlightCol =  sortedSeq[i][1]                      
           
           setTimeout(() => {            
 
-            this.loadArray(currArray, true) 
+            //handle current 'picture' of grid
+            this.loadArray(currArray) 
 
+            //handle current highlighted column
             NUM_ROWS = Math.max.apply(null, currArray) + 2
             NUM_COLS = currArray.length
             let gridWithHighlight = this.state.grid            
             gridWithHighlight = this.highlightCol(gridWithHighlight, highlightCol, NUM_ROWS, NUM_COLS)
+
             this.setState ({
               grid: gridWithHighlight
             })
@@ -114,8 +115,9 @@ class SortingVisualizer extends Component {
         }
     }
 
-    highlightCol(grid, footerNumToHighlight, numRows, numCols){    
-        //get idx of footerNum        
+    highlightCol(grid, footerNumToHighlight, numRows, numCols){  
+
+        //get idx of footerNumToHighlight        
         let highlightIdx = 0
         let r = numRows-1
         let count = 0
@@ -128,15 +130,13 @@ class SortingVisualizer extends Component {
           count += 1
         }
 
-        // console.log('HighlightIdx: ' + highlightIdx + ", footerNumToHighLight: " + footerNumToHighlight)
-
+        //Use idx to highlight the specific column
         count = 0
         let row = numRows-3      
 
         while(count < footerNumToHighlight && row >= 0) {
           
-          grid[row][highlightIdx].isHighlighted = true              
-          console.log(`Highlighting: grid[${row}][${highlightIdx}]. ` + 'HighlightIdx: ' + highlightIdx + ", footerNumToHighLight: " + footerNumToHighlight)
+          grid[row][highlightIdx].isHighlighted = true                        
 
           count += 1
           row -= 1          
@@ -154,7 +154,7 @@ class SortingVisualizer extends Component {
       return (
           <div className="whole_page">
             <p>                
-                Test array: 9,2,7,5,8,4,3,1,6
+                Test array: 9,2,7,5,10,8,4,3,1,6
             </p>
  
             <form onSubmit={this.handleSubmit}>
