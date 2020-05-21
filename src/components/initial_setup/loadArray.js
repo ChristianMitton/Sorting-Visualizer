@@ -1,5 +1,6 @@
-import { clone, copy2dArrayOfObjects, modify } from './copyObjects';
-import GraphNode from '../../dataStructures/GraphNode';
+// import { clone, copy2dArrayOfObjects, modify } from './copyObjects';
+import { copy2dArrayOfObjects } from './copyObjects';
+// import GraphNode from '../../dataStructures/GraphNode';
 
 function loadArray(grid, arr, numRows, numCols) {      
     let updatedGrid = copy2dArrayOfObjects(grid)   
@@ -12,7 +13,7 @@ function loadArray(grid, arr, numRows, numCols) {
 
   function populateGrid(grid, arr, numRows, numCols) {    
     // updatedGrid[4][4].active = true;
-    let endOfArr = numRows-2          
+    // let endOfArr = numRows-2          
     let col = 0
     while(col < numCols){
             

@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 import Node from './Node/Node';
-import Form from './Form';
+// import Form from './Form';
 import '../styles/styles.css';
 
-import { clone, copy2dArrayOfObjects, modify } from './initial_setup/copyObjects';
+// import { clone, copy2dArrayOfObjects, modify } from './initial_setup/copyObjects';
 
-let GraphNode = require('../dataStructures/GraphNode').default;
+// let GraphNode = require('../dataStructures/GraphNode').default;
 let createDefaultGrid = require('./initial_setup/createDefaultGrid').default;
 let load_array = require('./initial_setup/loadArray').default;
 
 let insertion_sort = require('../algorithms/insertion_sort').default;
 let mergesort = require('../algorithms/mergesort').default;
-let quicksort = require('../algorithms/quicksort').default;
+// let quicksort = require('../algorithms/quicksort').default;
 let selection_sort = require('../algorithms/selection_sort').default;
+let bubblesort = require('../algorithms/bubblesort').default;
 
 let NUM_ROWS = 20
 let NUM_COLS = 10
 let SAMPLE_ARRAY = [ 9 , 2 , 7 , 5 , 10, 8 , 4 , 3 , 1 , 6, ]
+
+//! HAVE BUTTON THAT SAYS: 'generate array of length {length_of_array}'
 
 class SortingVisualizer extends Component {
     constructor(props) {
@@ -76,23 +79,72 @@ class SortingVisualizer extends Component {
     visualizeInsertion(){
       let arrayToUse = [1]
       //If the user array hasn't been filled, default to sample array
-      if (this.state.user_array.length != 0){
+      if (this.state.user_array.length !== 0){
         arrayToUse = this.state.user_array.split(',').map(Number)
       } else {
         arrayToUse = SAMPLE_ARRAY
       }
             
-      let sortedSeq = insertion_sort(arrayToUse)
+      let snapshots = insertion_sort(arrayToUse)
       
-      this.animateInsertion(sortedSeq)
+      this.animateInsertion(snapshots)
 
     }
 
-    animateInsertion(sortedSeq) {
-      //sortedSeq is the following format: [array, footer_num_to_be_highlighted] 
-      for(let i in sortedSeq){
-        let currArray = sortedSeq[i][0]
-        let highlightCol =  sortedSeq[i][1]
+    visualizeSelectionSort(){
+      let arrayToUse = []
+      //If the user array hasn't been filled, default to sample array
+      if (this.state.user_array.length !== 0){
+        arrayToUse = this.state.user_array.split(',').map(Number)
+      } else {
+        arrayToUse = SAMPLE_ARRAY
+      }
+
+      let snapshots = selection_sort(arrayToUse)
+
+      this.animate_selection_sort(snapshots)      
+    }
+
+    visualizeBubbleSort(){
+      let arrayToUse = [1]
+      //If the user array hasn't been filled, default to sample array
+      if (this.state.user_array.length !== 0){
+        arrayToUse = this.state.user_array.split(',').map(Number)
+      } else {
+        arrayToUse = SAMPLE_ARRAY
+      }
+            
+      let snapshots = bubblesort(arrayToUse)
+      
+      this.animateBubble(snapshots)
+    }
+
+    // visualizeMergeSort(){
+    //   let arrayToUse = []
+    //   //If the user array hasn't been filled, default to sample array
+    //   if (this.state.user_array.length !== 0){
+    //     arrayToUse = this.state.user_array.split(',').map(Number)
+    //   } else {
+    //     arrayToUse = SAMPLE_ARRAY
+    //   }
+
+    //   console.log(arrayToUse)
+
+    //   let snapshots = mergesort(arrayToUse)            
+
+    //   this.animate_mergeSort(snapshots)
+      
+    // }
+
+    // animate_mergeSort(){
+      
+    // }
+
+    animateInsertion(snapshots) {
+      //snapshots is the following format: [array, footer_num_to_be_highlighted] 
+      for(let i in snapshots){
+        let currArray = snapshots[i][0]
+        let highlightCol =  snapshots[i][1]
         
         setTimeout(() => {            
 
@@ -113,28 +165,40 @@ class SortingVisualizer extends Component {
         }, 600 * i)
         // }, 5000 * i)
       }
-  }
+    }  
 
-    visualizeSelectionSort(){
-      let arrayToUse = []
-      //If the user array hasn't been filled, default to sample array
-      if (this.state.user_array.length != 0){
-        arrayToUse = this.state.user_array.split(',').map(Number)
-      } else {
-        arrayToUse = SAMPLE_ARRAY
+    animateBubble(snapshots){
+      //snapshots is the following format: [array, footer_num_to_be_highlighted] 
+      for(let i in snapshots){
+        let currArray = snapshots[i][0]
+        let highlightCol =  snapshots[i][1]
+        
+        setTimeout(() => {            
+
+          //handle current 'picture' of grid
+          this.loadArray(currArray) 
+
+          //handle current highlighted column
+          NUM_ROWS = Math.max.apply(null, currArray) + 2
+          NUM_COLS = currArray.length
+          let gridWithHighlight = this.state.grid            
+          gridWithHighlight = this.highlightCol(gridWithHighlight, highlightCol, NUM_ROWS, NUM_COLS)
+
+          this.setState ({
+            grid: gridWithHighlight
+          })        
+          
+        }, 600 * i)
+        // }, 5000 * i)
       }
-
-      let sortedSeq = selection_sort(arrayToUse)
-
-      this.animate_selection_sort(sortedSeq)      
     }
 
-    animate_selection_sort(sortedSeq) {
-      //sortedSeq is the following format: [array, currentNumber, smallestNumberPtr] 
-      for(let i in sortedSeq){
-        let currArray = sortedSeq[i][0]
-        let currColHighlight =  sortedSeq[i][1]
-        let smallestNumPtrHighlight =  sortedSeq[i][2]
+    animate_selection_sort(snapshots) {
+      //snapshots is the following format: [array, currentNumber, smallestNumberPtr] 
+      for(let i in snapshots){
+        let currArray = snapshots[i][0]
+        let currColHighlight =  snapshots[i][1]
+        let smallestNumPtrHighlight =  snapshots[i][2]
 
         setTimeout(() => {            
           console.log('>     currColHighlight: ' + currColHighlight)
@@ -177,7 +241,7 @@ class SortingVisualizer extends Component {
 
         //get idx of footerNumToHighlight        
         let highlightIdx = 0
-        let r = numRows-1
+        // let r = numRows-1
         let count = 0
                 
         while(count < numCols){                  
@@ -205,7 +269,7 @@ class SortingVisualizer extends Component {
 
     render(){     
       const {grid} = this.state;  
-      let cols = new Array(NUM_COLS).fill(0)
+      // let cols = new Array(NUM_COLS).fill(0)
 
       let id = 0;
       
@@ -229,6 +293,10 @@ class SortingVisualizer extends Component {
 
             <button onClick={() => this.visualizeSelectionSort()}>
               Selection Sort
+            </button>
+
+            <button onClick={() => this.visualizeBubbleSort()}>
+              Bubble Sort
             </button>
 
             <div className="grid">            

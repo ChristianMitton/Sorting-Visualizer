@@ -1,5 +1,5 @@
 function insertionSort(arr){
-    let visitedNumbers = []
+    let snapshots = []
     
     for (let i = 1; i < arr.length; i += 1) {        
         //push tuple, with [arr, footerNumToHighlight] format         
@@ -8,7 +8,7 @@ function insertionSort(arr){
         let j = i - 1
         
         //pushes tuple, with [arr, footerNumToHighlight] format           
-        visitedNumbers.push([arr.slice(), key])
+        snapshots.push([arr.slice(), key])
         
         while(j >= 0 && arr[j] > key){                                                
             let temp = arr[j]
@@ -16,20 +16,20 @@ function insertionSort(arr){
             arr[j + 1] = temp                       
 
             j -= 1;                        
-            visitedNumbers.push([arr.slice(), key])            
+            snapshots.push([arr.slice(), key])            
         }        
     }
 
-    return visitedNumbers
+    return snapshots
 }
 
 export default insertionSort;
 
 // let arr = [9,2,7,5,8,4,3,1,6]
 
-// let visitedNumbers = insertionSort(arr)
+// let snapshots = insertionSort(arr)
 
 // console.log('array:')
 // console.log(arr)
-// console.log(`visitedNumbers:`)
-// console.log(visitedNumbers)
+// console.log(`snapshots:`)
+// console.log(snapshots)

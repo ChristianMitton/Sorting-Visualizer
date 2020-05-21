@@ -5,6 +5,7 @@ class GraphNode {
         this.col = col; 
         this.active = false;
         this.isHighlighted = false;   
+        this.finished = false;
     }
 }
 

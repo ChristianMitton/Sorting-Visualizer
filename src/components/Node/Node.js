@@ -14,7 +14,7 @@ class Node extends Component {
         const {
             value, 
             row, 
-            col, 
+            // col, 
             maxRows,
             isActive,
             isHighlighted
