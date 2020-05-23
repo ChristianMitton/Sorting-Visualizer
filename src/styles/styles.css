@@ -5,10 +5,12 @@
 body {
   font-family: "Avenir Next";
   font-size: 30px;
+  background-color: rgba(126, 188, 93, 0.363);
 }
 
-.grid {
-  margin-bottom: 50px;
+.whole_page {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
 }
 
 .button {
@@ -41,5 +43,38 @@ body {
 .button:active {
   position: relative;
   top: 1px;
+}
+
+.reverse-slider {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  vertical-align: middle;
+}
+
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 20px;
+}
+
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background: #4CAF50;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 20px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  margin: 12px;
 }
 /*# sourceMappingURL=styles.css.map */

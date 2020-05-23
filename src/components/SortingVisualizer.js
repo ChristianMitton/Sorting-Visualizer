@@ -14,6 +14,7 @@ let mergesort = require('../algorithms/mergesort').default;
 // let quicksort = require('../algorithms/quicksort').default;
 let selection_sort = require('../algorithms/selection_sort').default;
 let bubblesort = require('../algorithms/bubblesort').default;
+let heapsort = require('../algorithms/heapsort').default;
 
 let NUM_ROWS = 20
 let NUM_COLS = 10
@@ -26,7 +27,8 @@ class SortingVisualizer extends Component {
         super(props);
         this.state = {
             grid: [],
-            user_array: []
+            user_array: [],
+            speed: 500
         };
     }
 
@@ -41,9 +43,27 @@ class SortingVisualizer extends Component {
       grid = load_array(grid, SAMPLE_ARRAY, NUM_ROWS, NUM_COLS)
       
       this.setState({
-          grid: grid
+          grid: grid          
       });
     }
+
+    loadArray(array) {           
+
+      NUM_ROWS = Math.max.apply(null, array) + 2
+      NUM_COLS = array.length
+
+      let updatedGrid = createDefaultGrid(NUM_ROWS, NUM_COLS)
+      
+      updatedGrid = load_array(updatedGrid, array, NUM_ROWS, NUM_COLS)      
+      
+      this.setState ({
+        grid: updatedGrid
+      })
+    }  
+
+    //? ----------------------------------------------------------------
+    //? ---------------------------- FORMS  ----------------------------
+    //? ----------------------------------------------------------------
 
     handleArrayChange = (event) => {
       let arr = event.target.value
@@ -62,19 +82,17 @@ class SortingVisualizer extends Component {
         this.loadArray(userArray)
     }
 
-    loadArray(array) {           
-
-      NUM_ROWS = Math.max.apply(null, array) + 2
-      NUM_COLS = array.length
-
-      let updatedGrid = createDefaultGrid(NUM_ROWS, NUM_COLS)
-      
-      updatedGrid = load_array(updatedGrid, array, NUM_ROWS, NUM_COLS)      
-      
-      this.setState ({
-        grid: updatedGrid
+    handleSpeedChange = (event) => {
+      let newSpeed = event.target.value
+      console.log(newSpeed)
+      this.setState({
+        speed: newSpeed
       })
-    }  
+    }
+
+    //? ----------------------------------------------------------------
+    //? ------------------------ VISUALIZATION  ------------------------ 
+    //? ----------------------------------------------------------------
 
     visualizeInsertion(){
       let arrayToUse = [1]
@@ -119,26 +137,23 @@ class SortingVisualizer extends Component {
       this.animateBubble(snapshots)
     }
 
-    // visualizeMergeSort(){
-    //   let arrayToUse = []
-    //   //If the user array hasn't been filled, default to sample array
-    //   if (this.state.user_array.length !== 0){
-    //     arrayToUse = this.state.user_array.split(',').map(Number)
-    //   } else {
-    //     arrayToUse = SAMPLE_ARRAY
-    //   }
-
-    //   console.log(arrayToUse)
-
-    //   let snapshots = mergesort(arrayToUse)            
-
-    //   this.animate_mergeSort(snapshots)
+    visualizeHeapSort(){
+      let arrayToUse = [1]
+      //If the user array hasn't been filled, default to sample array
+      if (this.state.user_array.length !== 0){
+        arrayToUse = this.state.user_array.split(',').map(Number)
+      } else {
+        arrayToUse = SAMPLE_ARRAY
+      }
+            
+      let snapshots = heapsort(arrayToUse)
       
-    // }
+      this.animateHeap(snapshots)
+    }
 
-    // animate_mergeSort(){
-      
-    // }
+    //? ----------------------------------------------------------------
+    //? ------------------------ Animation  ----------------------------
+    //? ----------------------------------------------------------------
 
     animateInsertion(snapshots) {
       //snapshots is the following format: [array, footer_num_to_be_highlighted] 
@@ -162,7 +177,7 @@ class SortingVisualizer extends Component {
           })
         
           
-        }, 600 * i)
+        }, this.state.speed * i)
         // }, 5000 * i)
       }
     }  
@@ -188,7 +203,7 @@ class SortingVisualizer extends Component {
             grid: gridWithHighlight
           })        
           
-        }, 600 * i)
+        }, this.state.speed * i)
         // }, 5000 * i)
       }
     }
@@ -232,10 +247,53 @@ class SortingVisualizer extends Component {
             })     
           }
           
-        }, 600 * i)
+        }, this.state.speed * i)
       }
-
     }    
+
+    animateHeap(snapshots){
+      //snapshots is the following format: [array, footer_num_to_be_highlighted] 
+      //snapshots is the following format: [array, currentNumber, smallestNumberPtr] 
+      for(let i in snapshots){
+        let currArray = snapshots[i][0]
+        let currColHighlight =  snapshots[i][1]
+        let smallestNumPtrHighlight =  snapshots[i][2]
+
+        setTimeout(() => {            
+          console.log('>     currColHighlight: ' + currColHighlight)
+          console.log('>     smallestNumPtrHighlight: ' + smallestNumPtrHighlight)
+
+          //handle current 'picture' of grid
+          this.loadArray(currArray) 
+
+          //handle currColHighlight
+          if(currColHighlight !== -1){
+            NUM_ROWS = Math.max.apply(null, currArray) + 2
+            NUM_COLS = currArray.length
+
+            let gridWithHighlight = this.state.grid            
+            gridWithHighlight = this.highlightCol(gridWithHighlight, currColHighlight, NUM_ROWS, NUM_COLS)
+
+            this.setState ({
+              grid: gridWithHighlight
+            })     
+          }
+          //handle smallestNumPtrHighlight
+          if(smallestNumPtrHighlight !== -1){
+            NUM_ROWS = Math.max.apply(null, currArray) + 2
+            NUM_COLS = currArray.length
+
+            let gridWithHighlight = this.state.grid            
+            gridWithHighlight = this.highlightCol(gridWithHighlight, smallestNumPtrHighlight, NUM_ROWS, NUM_COLS)
+
+            this.setState ({
+              grid: gridWithHighlight
+            })     
+          }
+          
+        }, this.state.speed * i)
+      }
+    }
 
     highlightCol(grid, footerNumToHighlight, numRows, numCols){  
 
@@ -267,6 +325,10 @@ class SortingVisualizer extends Component {
         return grid
     }
 
+    //? ----------------------------------------------------------------
+    //? ---------------------------- RENDER ---------------------------- 
+    //? ----------------------------------------------------------------
+
     render(){     
       const {grid} = this.state;  
       // let cols = new Array(NUM_COLS).fill(0)
@@ -274,16 +336,20 @@ class SortingVisualizer extends Component {
       let id = 0;
       
       return (
-          <div className="whole_page">
-            <p>                
-                Test array: 9,2,7,5,10,8,4,3,1,6
-            </p>
- 
+          <div className="whole_page form">             
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    <label>Enter comma seperated numbers (e.g. 1,3,2) </label>                                        
+                    <label>Enter comma seperated numbers (e.g. 9,2,7,5,10,8,4,3,1,6) <br></br></label>                                        
                     <input type='text' value={this.state.user_array} onChange={this.handleArrayChange}/>
                     <button type="submit">Enter</button>       
+                </div>                         
+            </form>  
+
+            <form onSubmit={this.handleSubmit}>
+                <div>
+                    <label>Adjust speed: </label>                                        
+                    <input type='range' min='30' max='1000' className='reverse-slider' value={this.state.speed} onChange={this.handleSpeedChange}/>
+                    {/* <button type="submit">Enter</button>        */}
                 </div>                         
             </form>  
 
@@ -298,6 +364,10 @@ class SortingVisualizer extends Component {
             <button onClick={() => this.visualizeBubbleSort()}>
               Bubble Sort
             </button>
+
+            <button onClick={() => this.visualizeHeapSort()}>
+              Heap Sort
+            </button>            
 
             <div className="grid">            
               {grid.map( (row, rowIdx) => {

@@ -1,6 +1,7 @@
 $wallColor: rgb(128,128,128);
 $startColor: rgba(63, 195, 128, 1);
 $finishColor: rgba(255, 0, 0, 0.6);
+$barcolor: black;
 
 .node {
     width: 4vw;
@@ -15,15 +16,19 @@ $finishColor: rgba(255, 0, 0, 0.6);
 }
 
 .active {
-    background-color: black;    
+    background-color: rgba(0, 0, 0, 0.822);    
+    // color: $barcolor;
+    color: transparent;
 }
 
 .highlighted {
     background-color: yellow;    
+    color: transparent;
 }
 
 .bar {      
     background-color: transparent;  
+    color: black;
     font-size: 0;
     // padding-top: 10px;
     // padding-top: 10px;
@@ -42,13 +47,10 @@ $finishColor: rgba(255, 0, 0, 0.6);
 
 .footer {
     background-color: transparent;
-    background-color: lightgreen;    
+    // background-color: lightgreen;    
 //     // background: red;
 //     // margin-left: 0;
 //     // margin-right: 0;
-//     padding-top: 10px;
-//     border-top: 1px solid;    
-//     margin-top: -1px;
     
 //     // margin-top: 20px;
 }

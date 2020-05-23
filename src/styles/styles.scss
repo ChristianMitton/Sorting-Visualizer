@@ -7,23 +7,29 @@ $girdOutline: rgb(71, 85, 95);
     display: none;
 }
 
-// body {
-//     overflow: hidden; //hide scroll bar
-// }
-
 body {
 	font-family: "Avenir Next";
 	font-size: 30px;
+	background-color: rgba(126, 188, 93, 0.363);	
+
 }
 
 .whole_page {
 	// width: 900px;
 	// margin-left: auto;
 	// margin-right: auto;		
+	// margin-bottom: 10%;
+	// margin-top: -10px;
+	// margin: 10%;
+
+	// background-color: white;		
+	// transform: scale(0.7);	
+	transform: scale(0.9);
+
 }
 
-.grid {
-    margin-bottom: 50px;    
+.grid {	
+    //? margin-bottom: 50px;    
 }
 
 .button {    
@@ -52,3 +58,48 @@ body {
 	position:relative;
 	top:1px;
 }
+
+.reverse-slider{
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+	
+	vertical-align:middle;
+	// background: blue;	
+
+	 
+	// // background-color: #666666;
+}
+
+.form input {
+	font-family: "Roboto", sans-serif;
+	outline: 0;
+	background: #f2f2f2;
+	// width: 100%;
+	border: 0;
+	margin: 0 0 15px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 20px;
+  }
+
+  .form button {
+	font-family: "Roboto", sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	background: #4CAF50;
+	// width: 100%;
+	border: 0;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 20px;
+	-webkit-transition: all 0.3 ease;
+	transition: all 0.3 ease;
+	cursor: pointer;
+
+	margin: 12px;
+	// margin-bottom: 12px;
+	// display:inline-block;	
+  }
